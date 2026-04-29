@@ -19,7 +19,7 @@ const defaultMessage = {
 const ERROR_BAD_REQUEST = {
     status: false, 
     status_code: 400, 
-    message: 'Os dados enviados na requisição não estão corretos.'
+    message: 'Os dados enviados na requisição não estão corretos'
 }
 
 const ERROR_CONTENT_TYPE = {
@@ -31,7 +31,7 @@ const ERROR_CONTENT_TYPE = {
 const ERROR_NOT_FOUND = {
     status: false, 
     status_code: 404, 
-    message: 'Não foi encontrado nenhum dado para retorno.'
+    message: 'Não foi encontrado nenhum dado para retorno'
 }
 
 const ERROR_INTERNAL_SERVER_MODEL = {
@@ -51,12 +51,18 @@ const ERROR_INTERNAL_SERVER_CONTROLLER = {
 const SUCCESS_CREATED_ITEM = {
     status: true,
     status_code: 201,
-    message: 'Registro inserido com sucesso!'
+    message: 'Registro inserido com sucesso'
 }
 
 const SUCCESS_RESPONSE = {
     status: true,
     status_code: 200,
+}
+
+const SUCCESS_UPDATE_ITEM = {
+    status: true,
+    status_code: 200,
+    message: 'Registro atualizado com sucesso'
 }
 
 module.exports = {
@@ -67,5 +73,6 @@ module.exports = {
     ERROR_CONTENT_TYPE,
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_NOT_FOUND,
-    SUCCESS_RESPONSE
+    SUCCESS_RESPONSE,
+    SUCCESS_UPDATE_ITEM
 }
