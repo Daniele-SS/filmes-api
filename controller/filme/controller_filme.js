@@ -171,8 +171,34 @@ const buscarFilme = async function(id) {
 
 
 //Função para excluir um filme
-const excluirFilme = async function() {
+const excluirFilme = async function(id) {
+    let message = JSON.parse(JSON.stringify(config_message))
 
+    try {
+            let resultBuscarId = await buscarFilme(id) //Validação para o ID incorreto
+
+            if(resultBuscarId.status) {
+
+                    let result = await filmeDAO.deleteFilme(id) //Chama a função do DAO para deletar o filme (dados e ID)
+
+                    if(result) {
+                        message.defaultMessage.status       = message.SUCCESS_DELETED_ITEM.status
+                        message.defaultMessage.status_code  = message.SUCCESS_DELETED_ITEM.status_code
+                        message.defaultMessage.message = message.SUCCESS_DELETED_ITEM.message
+
+                        return message.defaultMessage //200
+
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER_MODEL // 500 (Internal Server Error na model)
+                    }
+
+            } else {
+                return validar
+            }
+        
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
 }
 
 
