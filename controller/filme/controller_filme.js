@@ -31,10 +31,12 @@ const inserirNovoFilme = async function(filme, contentType) {
                     let result = await filmeDAO.insertFilme(filme) //Encaminha os dados do filme para o DAO
             
                     if(result) { //201 (Created)
+                        filme.id                            = result //Coloca o atributo ID no JSON do filme após ele ser gerado no insert do BD
                         message.defaultMessage.status       = message.SUCCESS_CREATED_ITEM.status //Adiciona o status da requisição sucedida
                         message.defaultMessage.status_code  = message.SUCCESS_CREATED_ITEM.status_code //Adiciona o status_code (201) em caso de criação de atributo bem sucedida
                         message.defaultMessage.message      = message.SUCCESS_CREATED_ITEM.message //Adiciona a mensagem que será mostrada após a requisição ser finalizada
-            
+                        message.defaultMessage.response     = filme
+
                     } else { //500 (Internal Server Error na model)
                         return message.ERROR_INTERNAL_SERVER_MODEL
                     }
@@ -78,6 +80,7 @@ const atualizarFilme = async function(filme, id, contentType) {
                         message.defaultMessage.status       = message.SUCCESS_UPDATE_ITEM.status
                         message.defaultMessage.status_code  = message.SUCCESS_UPDATE_ITEM.status_code
                         message.defaultMessage.message      = message.SUCCESS_UPDATE_ITEM.message
+                        message.defaultMessage.response     = filme
 
                         return message.defaultMessage //200 (OK, atualizado)
 
