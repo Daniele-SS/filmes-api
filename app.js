@@ -28,7 +28,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions)) //Configura as permissões da API através do cors
 
-
+//Inserir filme
 app.post('/v1/senai/locadora/filme', bodyParserJSON, async function(request, response){
     let dados       = request.body //Recebe o conteúdo dentro do body da requisição
     let contentType = request.headers['content-type']
@@ -40,6 +40,7 @@ app.post('/v1/senai/locadora/filme', bodyParserJSON, async function(request, res
 })
 
 
+//Atualizar filme
 app.get('/v1/senai/locadora/filme', async function(request, response) {
     let result = await controllerFilme.listarFilme()
 
@@ -48,6 +49,7 @@ app.get('/v1/senai/locadora/filme', async function(request, response) {
 })
 
 
+//Listar filmes
 app.get('/v1/senai/locadora/filme/:id', async function(request, response){
     let id      = request.params.id //Recebe o ID via parâmetro
     let result = await controllerFilme.buscarFilme(id)
@@ -57,6 +59,7 @@ app.get('/v1/senai/locadora/filme/:id', async function(request, response){
 })
 
 
+//Buscar filmes
 app.put('/v1/senai/locadora/filme/:id', bodyParserJSON, async function(request, response){
     let contentType = request.headers['content-type'] //Recebe o contentType da requisição
 
@@ -72,8 +75,10 @@ app.put('/v1/senai/locadora/filme/:id', bodyParserJSON, async function(request, 
     response.json(result)
 })
 
+
+//Deletar filmes
 app.delete('/v1/senai/locadora/filme/:id', async function(request, response){
-    let id = request.params.id //Recebe o ID do registro a ser atualizado
+    let id = request.params.id //Recebe o ID do registro a ser deletado
 
     let result = await controllerFilme.excluirFilme(id)
 

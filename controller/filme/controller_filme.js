@@ -140,7 +140,7 @@ const buscarFilme = async function(id) {
 
     try {
         //Validação para garantir que o ID seja válido
-        if(id == '' || id == null || id == undefined || isNaN(id)) {
+        if(id == undefined || id == '' || id == null || isNaN(id)) {
             message.ERROR_BAD_REQUEST.field = '[ID] INVÁLIDO'
             return message.ERROR_BAD_REQUEST //400
 
@@ -184,20 +184,20 @@ const excluirFilme = async function(id) {
                     if(result) {
                         message.defaultMessage.status       = message.SUCCESS_DELETED_ITEM.status
                         message.defaultMessage.status_code  = message.SUCCESS_DELETED_ITEM.status_code
-                        message.defaultMessage.message = message.SUCCESS_DELETED_ITEM.message
+                        message.defaultMessage.message      = message.SUCCESS_DELETED_ITEM.message
 
-                        return message.defaultMessage //200
+                        return message.defaultMessage //200, mas o status code 204 (No Content) também poderia ser usado
 
                     } else {
                         return message.ERROR_INTERNAL_SERVER_MODEL // 500 (Internal Server Error na model)
                     }
 
             } else {
-                return validar
+                return resultBuscarId //400 e 404
             }
         
     } catch (error) {
-        return message.ERROR_INTERNAL_SERVER_CONTROLLER
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER // 500 (Internal Server Error na controller)
     }
 }
 
@@ -207,19 +207,19 @@ const validarDados = async function(filme) {
     let message = JSON.parse(JSON.stringify(config_message)) 
     console.log(filme.valor.split('.')[0].length > 3)
 
-    if(filme.nome == '' || filme.nome == null || filme.nome == undefined || filme.nome.length > 80) {
+    if(filme.nome == undefined || filme.nome == '' || filme.nome == null || filme.nome.length > 80) {
         message.ERROR_BAD_REQUEST.field = '[NOME] INVÁLIDO'
         return message.ERROR_BAD_REQUEST //400
 
-    } else if(filme.data_lancamento == '' || filme.data_lancamento == null || filme.data_lancamento == undefined || filme.data_lancamento.length != 10) {
+    } else if(filme.data_lancamento == undefined || filme.data_lancamento == '' || filme.data_lancamento == null || filme.data_lancamento.length != 10) {
         message.ERROR_BAD_REQUEST.field = '[DATA_LANÇAMENTO] INVÁLIDO'
         return message.ERROR_BAD_REQUEST //400
 
-    } else if(filme.duracao == '' || filme.duracao == null || filme.duracao == undefined || filme.duracao.length < 5) {
+    } else if(filme.duracao == undefined || filme.duracao == '' || filme.duracao == null || filme.duracao.length < 5) {
         message.ERROR_BAD_REQUEST.field = '[DURAÇÃO] INVÁLIDO'
         return message.ERROR_BAD_REQUEST //400
 
-    } else if(filme.sinopse == '' || filme.sinopse == null || filme.sinopse == undefined) {
+    } else if(filme.sinopse == undefined || filme.sinopse == '' || filme.sinopse == null) {
         message.ERROR_BAD_REQUEST.field = '[SINOPSE] INVÁLIDO'
         return message.ERROR_BAD_REQUEST //400
 
@@ -227,7 +227,7 @@ const validarDados = async function(filme) {
         message.ERROR_BAD_REQUEST.field = '[AVALIAÇÃO] INVÁLIDO'
         return message.ERROR_BAD_REQUEST //400
 
-    } else if(filme.valor == '' || filme.valor == null || filme.valor == undefined || filme.valor.split('.')[0].length > 3 || isNaN(filme.valor)) {
+    } else if(filme.valor == undefined || filme.valor == '' || filme.valor == null || filme.valor.split('.')[0].length > 3 || isNaN(filme.valor)) {
         message.ERROR_BAD_REQUEST.field = '[VALOR] INVÁLIDO'
         return message.ERROR_BAD_REQUEST //400
 

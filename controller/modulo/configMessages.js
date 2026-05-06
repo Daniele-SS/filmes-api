@@ -56,18 +56,18 @@ const SUCCESS_CREATED_ITEM = {
 
 const SUCCESS_RESPONSE = {
     status: true,
-    status_code: 200,
+    status_code: 200, //GET
 }
 
 const SUCCESS_UPDATE_ITEM = {
     status: true,
-    status_code: 200,
+    status_code: 200, //PUT
     message: 'Registro atualizado com sucesso'
 }
 
 const SUCCESS_DELETED_ITEM = {
     status: true,
-    status_code: 200,
+    status_code: 200, //O status code 204 (No Content) também poderia ser usado
     message: 'Registro deletado com sucesso'
 }
 
