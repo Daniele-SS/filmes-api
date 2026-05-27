@@ -37,6 +37,88 @@ const insertSexo = async function(sexo) {
     }
 }
 
+
+const updateSexo = async function (sexo) {
+
+    try {
+        //Script para atualizar os dados no BD
+        let sql = `update tbl_sexo set
+                        sigla 	    = '${sexo.sigla}',
+                        where id    = '${sexo.id}'
+                    `
+
+        let result = await knexConex.raw(sql) //Executa o scriptSQL no BD
+
+        if(result) {
+            return true
+        } else {
+            return false
+        }
+        
+    } catch (error) {
+        return false
+    }
+}
+
+
+const selectAllSexo = async function () {
+    try {
+        let sql = `select * from tbl_sexo order by id desc`
+
+        let result = await knexConex.raw(sql)
+ 
+        //Validação para verificar se o retorno no BD é um ARRAY
+        if(Array.isArray(result)) {
+            return result[0]
+        } else {
+            return false //Se o scriptSQL der erro, ele não devolve um ARRAY
+        }
+
+    } catch (error) {
+        return false
+    }
+}
+
+
+const selectByIdSexo = async function (id) {
+    try {
+        let sql = `select * from tbl_sexo where id=${id}`
+        let result = await knexConex.raw(sql)
+
+        if(Array.isArray(result)) {
+            return result[0]
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        return false
+    }
+}
+
+
+const deleteSexo = async function (id) {
+    try {
+        let sql = `delete from tbl_sexo where id = ${id}`
+
+        let result = await knexConex.raw(sql)
+        
+        if(result) {
+            return true
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        return false
+    }
+}
+
+
 module.exports = {
-    insertSexo
+    insertSexo,
+    updateSexo,
+    selectAllSexo,
+    selectByIdSexo,
+    deleteSexo
 }
