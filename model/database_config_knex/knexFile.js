@@ -22,6 +22,5 @@ module.exports = {
         directory: './db/seeds'
       }
     },
-   
-    // Você pode adicionar configurações para produção, testes, etc.
+    
   };

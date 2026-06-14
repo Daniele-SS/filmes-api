@@ -1,0 +1,1247 @@
+openapi: 3.0.3
+
+info:
+  title: Projeto Locadora de Filmes - Daniele Silva Santos
+  description: API-REST destinada para controlar Filmes, Produtoras, Pessoas e entidades relacionadas
+  version: 1.1.0
+  contact:
+    name: Daniele Silva Santos
+    email: dev.daniele@outlook.com
+  license:
+    name: MIT
+
+servers:
+  - url: https://api-restful-locadora.onrender.com
+    description: Ambiente de Produção
+  - url: http://localhost:8080
+    description: Ambiente Local
+
+tags:
+  - name: FILME
+  - name: CLASSIFICACAO
+  - name: GENERO
+  - name: IDIOMA
+  - name: NACIONALIDADE
+  - name: SEXO
+  - name: TIPO_TELEFONE
+  - name: PRODUTORA
+  - name: PESSOA
+
+paths:
+
+# =========================================
+#                   FILME
+# =========================================
+
+  /v1/senai/locadora/filme:
+    get:
+      tags: [FILME]
+      summary: Listar todos os filmes
+      responses:
+        '200':
+          description: Lista de filmes retornada com sucesso
+        '404':
+          description: Nenhum filme encontrado
+        '500':
+          description: Erro interno no servidor
+
+    post:
+      tags: [FILME]
+      summary: Inserir novo filme
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilmeInput'
+            example:
+              nome: "Operação Tempestade de Aço"
+              data_lancamento: "2025-03-20"
+              duracao: "02:05:00"
+              sinopse: "Um grupo de soldados de elite recebe uma missão impossível."
+              avaliacao: "4.60"
+              valor: "54.90"
+              capa: "https://exemplo.com/capas/tempestade.jpg"
+              trailer_url: "https://youtube.com/watch?v=temp003"
+              status_filme: "Ativo"
+              id_classificacao_indicativa: 3
+              id_produtora: 3
+              genero:
+                - id: 2
+                - id: 1
+              idioma:
+                - id: 1
+                  tipo: "Original"
+                - id: 2
+                  tipo: "Dublado"
+              pessoa:
+                - id: 2
+                  funcao: "Ator"
+                - id: 1
+                  funcao: "Dublador"
+      responses:
+        '201':
+          description: Filme inserido com sucesso
+        '400':
+          description: Dados inválidos no body
+        '415':
+          description: Content-Type inválido (esperado application/json)
+        '500':
+          description: Erro interno no servidor
+
+  /v1/senai/locadora/filme/{id}:
+    get:
+      tags: [FILME]
+      summary: Buscar filme por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Filme encontrado
+        '400':
+          description: ID inválido
+        '404':
+          description: Filme não encontrado
+        '500':
+          description: Erro interno no servidor
+
+    put:
+      tags: [FILME]
+      summary: Atualizar filme
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilmeInput'
+      responses:
+        '200':
+          description: Filme atualizado com sucesso
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Filme não encontrado
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+    delete:
+      tags: [FILME]
+      summary: Excluir filme
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Filme excluído com sucesso
+        '400':
+          description: ID inválido
+        '404':
+          description: Filme não encontrado
+        '500':
+          description: Erro interno no servidor
+
+# =========================================
+#              CLASSIFICACAO
+# =========================================
+
+  /v1/senai/locadora/classificacao:
+    get:
+      tags: [CLASSIFICACAO]
+      summary: Listar classificações
+      responses:
+        '200':
+          description: Lista de classificações retornada com sucesso
+        '404':
+          description: Nenhuma classificação encontrada
+        '500':
+          description: Erro interno no servidor
+
+    post:
+      tags: [CLASSIFICACAO]
+      summary: Inserir classificação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Classificacao'
+            example:
+              nome: "Livre"
+              descricao: "Conteúdo adequado para todas as idades"
+              sigla: "L"
+              idade_minima: "0"
+      responses:
+        '201':
+          description: Classificação criada com sucesso
+        '400':
+          description: Dados inválidos
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+  /v1/senai/locadora/classificacao/{id}:
+    get:
+      tags: [CLASSIFICACAO]
+      summary: Buscar classificação por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Classificação encontrada
+        '400':
+          description: ID inválido
+        '404':
+          description: Classificação não encontrada
+        '500':
+          description: Erro interno no servidor
+
+    put:
+      tags: [CLASSIFICACAO]
+      summary: Atualizar classificação
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Classificacao'
+      responses:
+        '200':
+          description: Classificação atualizada
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Classificação não encontrada
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+    delete:
+      tags: [CLASSIFICACAO]
+      summary: Excluir classificação
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Classificação excluída
+        '400':
+          description: ID inválido
+        '404':
+          description: Classificação não encontrada
+        '500':
+          description: Erro interno no servidor
+
+# =========================================
+#                  GENERO
+# =========================================
+
+  /v1/senai/locadora/genero:
+    get:
+      tags: [GENERO]
+      summary: Listar gêneros
+      responses:
+        '200':
+          description: Lista de gêneros retornada com sucesso
+        '404':
+          description: Nenhum gênero encontrado
+        '500':
+          description: Erro interno no servidor
+
+    post:
+      tags: [GENERO]
+      summary: Inserir gênero
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Genero'
+            example:
+              tipo: "Ação"
+              descricao: "Filmes com muita adrenalina e combates"
+      responses:
+        '201':
+          description: Gênero criado com sucesso
+        '400':
+          description: Dados inválidos
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+  /v1/senai/locadora/genero/{id}:
+    get:
+      tags: [GENERO]
+      summary: Buscar gênero por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Gênero encontrado
+        '400':
+          description: ID inválido
+        '404':
+          description: Gênero não encontrado
+        '500':
+          description: Erro interno no servidor
+
+    put:
+      tags: [GENERO]
+      summary: Atualizar gênero
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Genero'
+      responses:
+        '200':
+          description: Gênero atualizado
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Gênero não encontrado
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+    delete:
+      tags: [GENERO]
+      summary: Excluir gênero
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Gênero excluído
+        '400':
+          description: ID inválido
+        '404':
+          description: Gênero não encontrado
+        '500':
+          description: Erro interno no servidor
+
+# =========================================
+#                  IDIOMA
+# =========================================
+
+  /v1/senai/locadora/idioma:
+    get:
+      tags: [IDIOMA]
+      summary: Listar idiomas
+      responses:
+        '200':
+          description: Lista de idiomas retornada com sucesso
+        '404':
+          description: Nenhum idioma encontrado
+        '500':
+          description: Erro interno no servidor
+
+    post:
+      tags: [IDIOMA]
+      summary: Inserir idioma
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Idioma'
+            example:
+              nome: "Português"
+              sigla: "PT-BR"
+      responses:
+        '201':
+          description: Idioma criado com sucesso
+        '400':
+          description: Dados inválidos
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+  /v1/senai/locadora/idioma/{id}:
+    get:
+      tags: [IDIOMA]
+      summary: Buscar idioma por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Idioma encontrado
+        '400':
+          description: ID inválido
+        '404':
+          description: Idioma não encontrado
+        '500':
+          description: Erro interno no servidor
+
+    put:
+      tags: [IDIOMA]
+      summary: Atualizar idioma
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Idioma'
+      responses:
+        '200':
+          description: Idioma atualizado
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Idioma não encontrado
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+    delete:
+      tags: [IDIOMA]
+      summary: Excluir idioma
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Idioma excluído
+        '400':
+          description: ID inválido
+        '404':
+          description: Idioma não encontrado
+        '500':
+          description: Erro interno no servidor
+
+# =========================================
+#               NACIONALIDADE
+# =========================================
+
+  /v1/senai/locadora/nacionalidade:
+    get:
+      tags: [NACIONALIDADE]
+      summary: Listar nacionalidades
+      responses:
+        '200':
+          description: Lista de nacionalidades retornada com sucesso
+        '404':
+          description: Nenhuma nacionalidade encontrada
+        '500':
+          description: Erro interno no servidor
+
+    post:
+      tags: [NACIONALIDADE]
+      summary: Inserir nacionalidade
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Nacionalidade'
+            example:
+              nome_pais: "Brasil"
+      responses:
+        '201':
+          description: Nacionalidade criada com sucesso
+        '400':
+          description: Dados inválidos
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+  /v1/senai/locadora/nacionalidade/{id}:
+    get:
+      tags: [NACIONALIDADE]
+      summary: Buscar nacionalidade por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Nacionalidade encontrada
+        '400':
+          description: ID inválido
+        '404':
+          description: Nacionalidade não encontrada
+        '500':
+          description: Erro interno no servidor
+
+    put:
+      tags: [NACIONALIDADE]
+      summary: Atualizar nacionalidade
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Nacionalidade'
+      responses:
+        '200':
+          description: Nacionalidade atualizada
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Nacionalidade não encontrada
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+    delete:
+      tags: [NACIONALIDADE]
+      summary: Excluir nacionalidade
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Nacionalidade excluída
+        '400':
+          description: ID inválido
+        '404':
+          description: Nacionalidade não encontrada
+        '500':
+          description: Erro interno no servidor
+
+# =========================================
+#                   SEXO
+# =========================================
+
+  /v1/senai/locadora/sexo:
+    get:
+      tags: [SEXO]
+      summary: Listar sexos
+      responses:
+        '200':
+          description: Lista retornada com sucesso
+        '404':
+          description: Nenhum registro encontrado
+        '500':
+          description: Erro interno no servidor
+
+    post:
+      tags: [SEXO]
+      summary: Inserir sexo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sexo'
+            example:
+              nome: "Masculino"
+              sigla: "M"
+      responses:
+        '201':
+          description: Criado com sucesso
+        '400':
+          description: Dados inválidos
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+  /v1/senai/locadora/sexo/{id}:
+    get:
+      tags: [SEXO]
+      summary: Buscar sexo por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Registro encontrado
+        '400':
+          description: ID inválido
+        '404':
+          description: Não encontrado
+        '500':
+          description: Erro interno no servidor
+
+    put:
+      tags: [SEXO]
+      summary: Atualizar sexo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sexo'
+      responses:
+        '200':
+          description: Atualizado com sucesso
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Não encontrado
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+    delete:
+      tags: [SEXO]
+      summary: Excluir sexo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Excluído com sucesso
+        '400':
+          description: ID inválido
+        '404':
+          description: Não encontrado
+        '500':
+          description: Erro interno no servidor
+
+# =========================================
+#               TIPO TELEFONE
+# =========================================
+
+  /v1/senai/locadora/tipo-telefone:
+    get:
+      tags: [TIPO_TELEFONE]
+      summary: Listar tipos de telefone
+      responses:
+        '200':
+          description: Lista retornada com sucesso
+        '404':
+          description: Nenhum registro encontrado
+        '500':
+          description: Erro interno no servidor
+
+    post:
+      tags: [TIPO_TELEFONE]
+      summary: Inserir tipo de telefone
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoTelefone'
+            example:
+              tipo: "Celular"
+      responses:
+        '201':
+          description: Criado com sucesso
+        '400':
+          description: Dados inválidos
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+  /v1/senai/locadora/tipo-telefone/{id}:
+    get:
+      tags: [TIPO_TELEFONE]
+      summary: Buscar tipo de telefone por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Registro encontrado
+        '400':
+          description: ID inválido
+        '404':
+          description: Não encontrado
+        '500':
+          description: Erro interno no servidor
+
+    put:
+      tags: [TIPO_TELEFONE]
+      summary: Atualizar tipo de telefone
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipoTelefone'
+      responses:
+        '200':
+          description: Atualizado com sucesso
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Não encontrado
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+    delete:
+      tags: [TIPO_TELEFONE]
+      summary: Excluir tipo de telefone
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Excluído com sucesso
+        '400':
+          description: ID inválido
+        '404':
+          description: Não encontrado
+        '500':
+          description: Erro interno no servidor
+
+# =========================================
+#                PRODUTORA
+# =========================================
+
+  /v1/senai/locadora/produtora:
+    get:
+      tags: [PRODUTORA]
+      summary: Listar produtoras
+      responses:
+        '200':
+          description: Lista de produtoras retornada com sucesso
+        '404':
+          description: Nenhuma produtora encontrada
+        '500':
+          description: Erro interno no servidor
+
+    post:
+      tags: [PRODUTORA]
+      summary: Inserir produtora
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProdutoraInput'
+            example:
+              nome_fantasia: "Vision Studios"
+              cnpj: "55.345.678/0001-90"
+              razao_social: "Vision Studios Entretenimento LTDA"
+              website: "https://www.visionstudios.com"
+              data_inicio: "2012-08-25"
+              status_produtora: "Ativa"
+              email: "contato@visionstudios.com"
+              telefone:
+                - id: 1
+                  numero: "11946125563"
+                - id: 2
+                  numero: "11945687852"
+      responses:
+        '201':
+          description: Produtora criada com sucesso
+        '400':
+          description: Dados inválidos
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+  /v1/senai/locadora/produtora/{id}:
+    get:
+      tags: [PRODUTORA]
+      summary: Buscar produtora por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Produtora encontrada
+        '400':
+          description: ID inválido
+        '404':
+          description: Produtora não encontrada
+        '500':
+          description: Erro interno no servidor
+
+    put:
+      tags: [PRODUTORA]
+      summary: Atualizar produtora
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProdutoraInput'
+      responses:
+        '200':
+          description: Produtora atualizada com sucesso
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Produtora não encontrada
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+    delete:
+      tags: [PRODUTORA]
+      summary: Excluir produtora
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Produtora excluída com sucesso
+        '400':
+          description: ID inválido
+        '404':
+          description: Produtora não encontrada
+        '500':
+          description: Erro interno no servidor
+
+# =========================================
+#                  PESSOA
+# =========================================
+
+  /v1/senai/locadora/pessoa:
+    get:
+      tags: [PESSOA]
+      summary: Listar pessoas
+      responses:
+        '200':
+          description: Lista de pessoas retornada com sucesso
+        '404':
+          description: Nenhuma pessoa encontrada
+        '500':
+          description: Erro interno no servidor
+
+    post:
+      tags: [PESSOA]
+      summary: Inserir pessoa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pessoa'
+            example:
+              nome: "João da Silva"
+              data_nascimento: "1985-06-15"
+              id_sexo: 1
+              id_nacionalidade: 1
+      responses:
+        '201':
+          description: Pessoa criada com sucesso
+        '400':
+          description: Dados inválidos
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+  /v1/senai/locadora/pessoa/{id}:
+    get:
+      tags: [PESSOA]
+      summary: Buscar pessoa por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Pessoa encontrada
+        '400':
+          description: ID inválido
+        '404':
+          description: Pessoa não encontrada
+        '500':
+          description: Erro interno no servidor
+
+    put:
+      tags: [PESSOA]
+      summary: Atualizar pessoa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pessoa'
+      responses:
+        '200':
+          description: Pessoa atualizada
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Pessoa não encontrada
+        '415':
+          description: Content-Type inválido
+        '500':
+          description: Erro interno no servidor
+
+    delete:
+      tags: [PESSOA]
+      summary: Excluir pessoa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Pessoa excluída
+        '400':
+          description: ID inválido
+        '404':
+          description: Pessoa não encontrada
+        '500':
+          description: Erro interno no servidor
+
+# =========================================
+#               COMPONENTS
+# =========================================
+
+components:
+  schemas:
+
+    FilmeInput:
+      type: object
+      required:
+        - nome
+        - data_lancamento
+        - duracao
+        - sinopse
+        - avaliacao
+        - valor
+        - capa
+        - status_filme
+        - id_classificacao_indicativa
+        - id_produtora
+        - genero
+        - idioma
+        - pessoa
+      properties:
+        nome:
+          type: string
+          maxLength: 80
+          example: "Operação Tempestade de Aço"
+        data_lancamento:
+          type: string
+          format: date
+          example: "2025-03-20"
+        duracao:
+          type: string
+          example: "02:05:00"
+        sinopse:
+          type: string
+          example: "Um grupo de soldados de elite recebe uma missão impossível."
+        avaliacao:
+          type: number
+          format: float
+          example: 4.60
+        valor:
+          type: number
+          format: float
+          example: 54.90
+        capa:
+          type: string
+          format: uri
+          maxLength: 255
+          example: "https://exemplo.com/capas/tempestade.jpg"
+        trailer_url:
+          type: string
+          format: uri
+          maxLength: 255
+          example: "https://youtube.com/watch?v=temp003"
+        status_filme:
+          type: string
+          example: "Ativo"
+        id_classificacao_indicativa:
+          type: integer
+          example: 3
+        id_produtora:
+          type: integer
+          example: 3
+        genero:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+        idioma:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              tipo:
+                type: string
+                example: "Original"
+        pessoa:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              funcao:
+                type: string
+                maxLength: 30
+                example: "Ator"
+
+    Classificacao:
+      type: object
+      required: [nome, descricao, sigla, idade_minima]
+      properties:
+        nome:
+          type: string
+          example: "Livre"
+        descricao:
+          type: string
+          example: "Conteúdo adequado para todas as idades"
+        sigla:
+          type: string
+          example: "L"
+        idade_minima:
+          type: integer
+          example: 0
+
+    Genero:
+      type: object
+      required: [tipo, descricao]
+      properties:
+        tipo:
+          type: string
+          maxLength: 30
+          example: "Ação"
+        descricao:
+          type: string
+          example: "Filmes com muita adrenalina e combates"
+
+    Idioma:
+      type: object
+      required: [nome, sigla]
+      properties:
+        nome:
+          type: string
+          maxLength: 100
+          example: "Português"
+        sigla:
+          type: string
+          maxLength: 8
+          example: "PT-BR"
+
+    Sexo:
+      type: object
+      required: [nome, sigla]
+      properties:
+        nome:
+          type: string
+          example: "Masculino"
+        sigla:
+          type: string
+          example: "M"
+
+    Nacionalidade:
+      type: object
+      required: [nome_pais]
+      properties:
+        nome_pais:
+          type: string
+          example: "Brasil"
+
+    TipoTelefone:
+      type: object
+      required: [tipo]
+      properties:
+        tipo:
+          type: string
+          example: "Celular"
+
+    ProdutoraInput:
+      type: object
+      required:
+        - nome_fantasia
+        - cnpj
+        - razao_social
+        - website
+        - data_inicio
+        - status_produtora
+        - email
+        - telefone
+      properties:
+        nome_fantasia:
+          type: string
+          maxLength: 80
+          example: "Vision Studios"
+        cnpj:
+          type: string
+          maxLength: 30
+          example: "55.345.678/0001-90"
+        razao_social:
+          type: string
+          maxLength: 100
+          example: "Vision Studios Entretenimento LTDA"
+        website:
+          type: string
+          format: uri
+          maxLength: 255
+          example: "https://www.visionstudios.com"
+        data_inicio:
+          type: string
+          format: date
+          example: "2012-08-25"
+        status_produtora:
+          type: string
+          maxLength: 15
+          example: "Ativa"
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          example: "contato@visionstudios.com"
+        telefone:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: ID do tipo de telefone
+                example: 1
+              numero:
+                type: string
+                maxLength: 20
+                example: "11946125563"
+
+    Pessoa:
+      type: object
+      required: [nome, data_nascimento, id_sexo, id_nacionalidade]
+      properties:
+        nome:
+          type: string
+          example: "João da Silva"
+        data_nascimento:
+          type: string
+          format: date
+          example: "1985-06-15"
+        id_sexo:
+          type: integer
+          example: 1
+        id_nacionalidade:
+          type: integer
+          example: 1
